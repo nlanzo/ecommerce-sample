@@ -1,4 +1,5 @@
 import db from "@/db/db"
+import PurchaseReceiptEmail from "@/email/PurchaseReceipt"
 import { Heading1 } from "lucide-react"
 import { NextRequest, NextResponse } from "next/server"
 import { Resend } from "resend"
@@ -51,7 +52,13 @@ export async function POST(req: NextRequest) {
       from: `Support <${process.env.SENDER_EMAIL}>`,
       to: email,
       subject: "Order Confirmation",
-      react: <h1>Hi</h1>,
+      react: (
+        <PurchaseReceiptEmail
+          order={order}
+          product={product}
+          downloadVerificationId={downloadVerification.id}
+        />
+      ),
     })
   }
   return new NextResponse("OK")
